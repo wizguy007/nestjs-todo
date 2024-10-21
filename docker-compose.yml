@@ -1,0 +1,55 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todo-app
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+          ignore:
+            - node_modules/
+        - action: sync
+          path: ./templates
+          target: /app/templates
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json    
+    command: "npm run start:dev"
+    env_file:
+      - .env
+    environment:
+      - PORT=${PORT}
+    ports:
+      - '3000:${PORT}'
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:16-alpine
+    container_name: todo-db
+    shm_size: 128mb
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - todo-postgres-data:/var/lib/postgresql/data
+    ports:
+      - '54322:5432'
+
+  redis:
+    image: redis:alpine
+    container_name: todo-redis
+    ports:
+      - "63799:6379"
+    volumes:
+      - todo-redis-data:/data
+
+volumes:
+  todo-redis-data:
+  todo-postgres-data:
