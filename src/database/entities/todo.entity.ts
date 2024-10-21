@@ -15,7 +15,7 @@ export class Todo {
 
 	@Exclude({ toPlainOnly: true })
 	@Column({ type: 'timestamp with time zone', nullable: true })
-	completed_at: Date;
+	completed_at?: Date | null;
 
 	@Exclude({ toPlainOnly: true })
 	@CreateDateColumn()

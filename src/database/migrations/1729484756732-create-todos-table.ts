@@ -19,6 +19,7 @@ export class CreateTodosTable1729484756732 implements MigrationInterface {
 				{
 					name: 'description',
 					type: 'text',
+					isNullable: true,
 				},
 				{
 					name: 'completed_at',
