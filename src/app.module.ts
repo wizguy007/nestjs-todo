@@ -11,6 +11,7 @@ import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis'
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-store';
 import { BullModule } from '@nestjs/bull';
+import { RabbitMQModule } from './common/rabbitmq/rabbitmq.module';
 
 @Module({
 	imports: [
@@ -32,6 +33,7 @@ import { BullModule } from '@nestjs/bull';
 				removeOnFail: true,
 			},
 		}),
+		RabbitMQModule,
 		// APP MODULE
 		TodoModule,
 	],

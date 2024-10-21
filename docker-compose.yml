@@ -28,6 +28,7 @@ services:
     depends_on:
       - db
       - redis
+      - rabbitmq
 
   db:
     image: postgres:16-alpine
@@ -50,6 +51,20 @@ services:
     volumes:
       - todo-redis-data:/data
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: todo-rabbitmq
+    ports:
+      - '15672:15672'  # Management UI
+      - '5672:5672'    # RabbitMQ default port
+    environment:
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST}  
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}  
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq  # Persistent data
+
 volumes:
   todo-redis-data:
   todo-postgres-data:
+  rabbitmq-data:

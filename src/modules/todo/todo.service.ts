@@ -1,13 +1,25 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTodoDto, UpdateTodoDto } from './todo.dto';
 import { TodoRepository } from './todo.repository';
+import { RabbitMQProducerService } from 'src/common/rabbitmq/rabbitmq.producer.service';
+import { QUEUES } from 'src/common/rabbitmq/rabbitmq.constant';
 
 @Injectable()
 export class TodoService {
-	constructor(private readonly todoRepository: TodoRepository) {}
+	constructor(
+		private readonly todoRepository: TodoRepository,
+		private readonly rabbitMQProducerService: RabbitMQProducerService,
+	) {}
 
 	async getTodos() {
 		return this.todoRepository.find({ order: { created_at: 'DESC' } });
+	}
+
+	async createTodoViaQueue(payload: CreateTodoDto) {
+		await this.rabbitMQProducerService.sendToQueue(QUEUES.CREATE_TODO, {
+			title: payload.title,
+			description: payload.description,
+		});
 	}
 
 	async createTodo(payload: CreateTodoDto) {

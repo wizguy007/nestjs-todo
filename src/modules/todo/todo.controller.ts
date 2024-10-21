@@ -18,7 +18,7 @@ export class TodoController {
 
 	@Post('')
 	async createTodo(@Body(new ZodValidationPipe(CreateTodoSchema)) body: CreateTodoDto): Promise<IResponse> {
-		const response = await this.todoService.createTodo(body);
+		const response = await this.todoService.createTodoViaQueue(body);
 		return successRequestResponse('Action successful', response);
 	}
 

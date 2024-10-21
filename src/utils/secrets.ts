@@ -9,6 +9,8 @@ export const REDIS_URL = env.get('REDIS_URL').required().asString();
 export const REDIS_DISABLE_SSL = env.get('REDIS_DISABLE_SSL').default('true').required().asBool();
 export const CACHE_TTL = env.get('CACHE_TTL').default(5000).required().asIntPositive();
 
+export const AMQP_CLIENT = env.get('AMQP_CLIENT').required().asString();
+
 export const DB_HOST = env.get('DB_HOST').required().asString();
 export const DB_PORT = env.get('DB_PORT').required().asIntPositive();
 export const DB_DISABLE_SSL = env.get('DB_DISABLE_SSL').default('true').required().asBool();
